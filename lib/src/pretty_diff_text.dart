@@ -35,6 +35,8 @@ class PrettyDiffText extends StatelessWidget {
   /// The default value is 4.
   final int diffEditCost;
 
+  final bool? hideEqualLines;
+
   /// !!! DERIVED PROPERTIES FROM FLUTTER'S [RichText] IN ORDER TO ALLOW CUSTOMIZABILITY !!!
   /// See [RichText] for documentation.
   ///
@@ -74,6 +76,7 @@ class PrettyDiffText extends StatelessWidget {
     this.strutStyle,
     this.textWidthBasis = TextWidthBasis.parent,
     this.textHeightBehavior,
+    this.hideEqualLines,
   }) : super(key: key);
 
   @override
@@ -89,6 +92,9 @@ class PrettyDiffText extends StatelessWidget {
 
     diffs.forEach((diff) {
       TextStyle? textStyle = getTextStyleByDiffOperation(diff);
+      if (hideEqualLines == true && diff.operation == DIFF_EQUAL) {
+        return;
+      }
       textSpans.add(TextSpan(text: diff.text, style: textStyle));
     });
 
